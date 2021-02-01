@@ -1,65 +1,103 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import {useState} from 'react'
 
-export default function Home() {
+// Components
+import Layout from 'components/Layout'
+import AuthorIntro from 'components/AuthorIntro'
+import CardItem from 'components/CardItem'
+import CardListItem from 'components/CardListItem'
+import FilteringMenu from 'components/FilteringMenu'
+
+// Libs & Other
+import getAllBlogs from 'lib/api'
+import {useGetBlogs} from 'actions/index'
+
+// Style
+import { Row, Col } from 'react-bootstrap';
+
+const index = ({message, blogs: initialData}) => {
+  // debugger
+  // Viewing Options
+  const [filter, setFilter] = useState({
+    view: { list: 0 }
+  })
+
+  // GET ALL Blog Data
+  const {data: blogs, error} = useGetBlogs(initialData)
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Layout>
+      {/* Author Intro */}
+      <AuthorIntro />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      {/* Filtering Menu */}
+      <FilteringMenu
+        filter={filter} 
+        onChange={
+          (option, value) => {
+            setFilter({...filter, [option]: value})
+          }
+        }
+      />
+      <hr/>
+      
+      {/* className from props */}
+      <div className={`page-wrapper`}>
+        <Row className="mb-5">
+          {
+            // looping
+            blogs?.map(blog => 
+              filter.view.list 
+              ? <Col md="10" key={`${blog._id}-list`}>
+                  <CardListItem 
+                    title={blog.title} 
+                    subtitle={blog.subtitle} 
+                    date={blog.date}
+                    avatar={blog.author.avatar}
+                    author={blog.author.name}
+                    // slug={blog.slug}
+                    link={{
+                      href: '/blogs/[slug]',
+                      as: `/blogs/${blog.slug}`
+                    }}
+                  />
+                </Col>
+              : <Col md="4" key={blog._id}>
+                  <CardItem 
+                    title={blog.title} 
+                    subtitle={blog.subtitle} 
+                    image={blog.coverImage}
+                    date={blog.date}
+                    avatar={blog.author.avatar}
+                    author={blog.author.name}
+                    // slug={blog.slug}
+                    link={{
+                      href: '/blogs/[slug]',
+                      as: `/blogs/${blog.slug}`
+                    }}
+                  />
+                </Col>
+            )
+          }
+        </Row>
+      </div>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+    </Layout>
   )
 }
+
+/*
+This function is called during the build time
+it will be called on Server / SSR.
+This function also provide props to your page
+and it will craete static / html page
+*/
+export async function getStaticProps(){
+  const blogs = await getAllBlogs({offset: 0})
+  return{
+    props:{
+      blogs,
+    }
+  }
+}
+
+export default index

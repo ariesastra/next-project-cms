@@ -20,12 +20,18 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about this project, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Sanity CMS](https://www.sanity.io/docs/getting-started-with-sanity-cli) - Sanity.io, the platform for structured content.
+- [React Bootstrap](https://react-bootstrap.github.io/getting-started/introduction) - React Bootstrap.
+- [SCSS](https://www.npmjs.com/package/sass) - A pure JavaScript implementation of Sass. Sass makes CSS fun again.
+- [Sanity Block Content to React](https://www.npmjs.com/package/@sanity/block-content-to-react) - Render an array of block text from Sanity with React or React Native.
+- [Highlight.js](https://www.npmjs.com/package/highlight.js) - Highlight.js is a syntax highlighter written in JavaScript.
+- [NProgress](https://www.npmjs.com/package/nprogress) - Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and Medium.
+- [SWR](https://www.npmjs.com/package/swr) - SWR is a React Hooks library for remote data fetching.
+  You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
