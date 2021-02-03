@@ -32,7 +32,7 @@ const index = ({message, blogs: initialData}) => {
       {/* Filtering Menu */}
       <FilteringMenu
         filter={filter} 
-        onChange={
+        onChange={ 
           (option, value) => {
             setFilter({...filter, [option]: value})
           }
