@@ -1,24 +1,51 @@
 // Dependencies
 import { useSWRPages } from 'swr';
+import {useEffect} from 'react'
 
 // Components
 import CardItem from 'components/CardItem'
 import {useGetBlogs} from 'actions/index'
 import CardListItem from 'components/CardListItem'
+import CardItemBlank from 'components/CardItemBlank'
 
 // Style
 import {Col} from 'react-bootstrap'
 
-export const useGetBlogsPages = ({blogs: initialData, filter}) => {
+export const useGetBlogsPages = ({blogs, filter}) => {
+  useEffect(() => {
+    //assign pagination to window 
+    window.__pagination_init = true
+  }, [])
 
   return useSWRPages(
     'index-page',
-    ({offset, withSWR}) => {
-      const { data: blogs } =  withSWR(useGetBlogs(initialData));
+    ({ offset, withSWR }) => {
+      /**
+       * If there are no offset / offset is null
+       * put blogs to initialdata
+       */
+      let initialData = !offset && blogs
 
-      if (!blogs) { return 'Loading...'}
+      if (typeof window !== 'undefined' && window.__pagination_init) {
+        initialData = null
+      }
 
-      return blogs
+      const { data: paginatedBlog } = withSWR(useGetBlogs({offset, filter}, initialData));
+
+      if (!paginatedBlog) {
+        return (
+          Array(3)
+            .fill(0)
+            .map(
+              (_, i) =>
+              <Col md={4} key={i}>
+                <CardItemBlank />
+              </Col>
+          )
+        )
+      }
+
+      return paginatedBlog
         .map(blog =>
         filter.view.list ?
           <Col key={`${blog.slug}-list`} md="9">
@@ -53,7 +80,11 @@ export const useGetBlogsPages = ({blogs: initialData, filter}) => {
     // SWR: data you will get from 'withSWR' function
     // index: number of current page
     (SWR, index) => {
-      return 0;
+      // Todo Compute Offset Here
+      if (SWR.data && SWR.data.length === 0) {
+        return null
+      }
+      return (index + 1) * 3;
     },
     [ filter ]
   )

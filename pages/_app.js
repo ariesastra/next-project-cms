@@ -1,8 +1,18 @@
 import {library, config} from '@fortawesome/fontawesome-svg-core'
-import {faBorderAll, faList} from '@fortawesome/free-solid-svg-icons'
+import {
+  faBorderAll,
+  faList,
+  faSortAlphaUp,
+  faSortAlphaDown
+} from '@fortawesome/free-solid-svg-icons'
 
 config.autoAddCss = false
-library.add(faList, faBorderAll)
+library.add(
+  faList,
+  faBorderAll,
+  faSortAlphaUp,
+  faSortAlphaDown
+)
 
 // Styles
 import 'styles/index.scss'

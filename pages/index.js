@@ -10,21 +10,35 @@ import {useGetBlogsPages} from 'actions/pagination'
 import {getAllBlogs} from 'lib/api'
 
 // Style
-import { Row } from 'react-bootstrap';
+import { Row, Button } from 'react-bootstrap';
 
 export default function Home({blogs}){
   // debugger
   // Viewing Options
   const [filter, setFilter] = useState({
-    view: { list: 0 }
+    view: { list: 0 },
+    date: { asc: 0 }
   })
 
+  /**
+   * Use Blog Page Details
+   * 1. loadMore 
+   * to load more data
+   * 2. isLoadingMore
+   * is true whenever we are making request 
+   * to fetch data
+   * 3. isReachingEnd
+   * is treu when we loaded all of the Data
+   * and data is Empty 
+   */
   const {
     pages,
     isLoadingMore,
     isReachingEnd,
     loadMore
-  } = useGetBlogsPages({blogs, filter});
+  } = useGetBlogsPages({ blogs, filter });
+  
+  // End Pagination
 
   return (
     <Layout>
@@ -46,8 +60,24 @@ export default function Home({blogs}){
         <Row className="mb-5">
           {pages}
         </Row>
-      </div>
 
+      </div>
+      <div style={{textAlign:'center'}}>
+        <Button
+          variant="outline-secondary"
+          size="lg"
+          onClick={loadMore}
+          disabled={isReachingEnd || isLoadingMore}
+        >
+          {
+            isLoadingMore 
+            ? '...'
+            : isReachingEnd
+            ? 'No More Blog'
+            : 'Load More'
+          }
+        </Button>
+      </div>
     </Layout>
   )
 }
@@ -59,7 +89,7 @@ This function also provide props to your page
 and it will craete static / html page
 */
 export async function getStaticProps(){
-  const blogs = await getAllBlogs({offset: 0})
+  const blogs = await getAllBlogs({ offset: 0, date: 'desc' })
   return{
     props:{
       blogs

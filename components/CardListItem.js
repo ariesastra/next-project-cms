@@ -14,13 +14,13 @@ const CardListItem = ({title, subtitle, link, author, date, avatar}) => {
           <Card.Header
             className="d-flex flex-row">
             <img
-              src={urlFor(avatar).height(50).fit('max') || 'https://via.placeholder.com/150'}
+              src={urlFor(author?.avatar).height(50).fit('max') || 'https://via.placeholder.com/150'}
               className="rounded-circle mr-3"
               height="50px"
               width="50px"
               alt="avatar"/>
               <div>
-                <Card.Title className="font-weight-bold mb-1">{author}</Card.Title>
+                <Card.Title className="font-weight-bold mb-1">{author.name}</Card.Title>
                 <Card.Text className="card-date">{date}</Card.Text>
               </div>
           </Card.Header>
