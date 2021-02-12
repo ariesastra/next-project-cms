@@ -1,15 +1,17 @@
 // Dependencies
 import Link from 'next/link'
-import {urlFor} from 'lib/api'
+import { urlFor } from 'lib/api'
+import moment from 'moment'
 
 // Style
 import {Card} from 'react-bootstrap'
 
-const CardItem = ({title, subtitle, image, date, avatar, author, link, mode = 'normal'}) => {
+const CardItem = ({title, subtitle, image, date, author, link, mode = 'normal'}) => {
+
   return (
     <>
       <Card className={`fj-card ${mode}`}>
-        <div className="card-body-wrapper">
+        <div className={`card-body-wrapper ${!image ? 'no-image' : ''}`}>
           <Card.Header
             className="d-flex flex-row">
             <img
@@ -27,7 +29,7 @@ const CardItem = ({title, subtitle, image, date, avatar, author, link, mode = 'n
                     </>
                   : <>
                       <Card.Title className="font-weight-bold mb-1">{author.name ||'No Author'}</Card.Title>
-                      <Card.Text className="card-date">{date}</Card.Text>
+                      <Card.Text className="card-date">{moment(date).format('LLLL')}</Card.Text>
                     </>
               }
             </div>
@@ -36,16 +38,17 @@ const CardItem = ({title, subtitle, image, date, avatar, author, link, mode = 'n
             {
               mode === 'placeholder'
                 ? <div className='image-placeholder' />
-                : <Card.Img 
-                    src={
-                          urlFor(image)
-                          .height(200)
-                          .crop('center')
-                          .fit('clip')
-                          .url()
-                        }
-                    alt="Card image cap"
-                  />
+                : image.asset
+                &&  <Card.Img 
+                      src={
+                            urlFor(image)
+                            .height(200)
+                            .crop('center')
+                            .fit('clip')
+                            .url()
+                          }
+                      alt="Card image cap"
+                    />
             }
           </div>
           <Card.Body>

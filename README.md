@@ -31,6 +31,7 @@ To learn more about this project, take a look at the following resources:
 - [Highlight.js](https://www.npmjs.com/package/highlight.js) - Highlight.js is a syntax highlighter written in JavaScript.
 - [NProgress](https://www.npmjs.com/package/nprogress) - Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and Medium.
 - [SWR](https://www.npmjs.com/package/swr) - SWR is a React Hooks library for remote data fetching.
+- [Moment]() - A JavaScript date library for parsing, validating, manipulating, and formatting dates.
   You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel

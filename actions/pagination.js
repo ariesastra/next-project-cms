@@ -1,12 +1,14 @@
 // Dependencies
 import { useSWRPages } from 'swr';
-import {useEffect} from 'react'
+import { useEffect } from 'react'
+import moment from 'moment'
 
 // Components
 import CardItem from 'components/CardItem'
 import {useGetBlogs} from 'actions/index'
 import CardListItem from 'components/CardListItem'
 import CardItemBlank from 'components/CardItemBlank'
+import CardListItemBlank from 'components/CardListItemBlank'
 
 // Style
 import {Col} from 'react-bootstrap'
@@ -19,28 +21,31 @@ export const useGetBlogsPages = ({blogs, filter}) => {
 
   return useSWRPages(
     'index-page',
-    ({ offset, withSWR }) => {
+    ({ offset, withSWR, limit }) => {
       /**
        * If there are no offset / offset is null
        * put blogs to initialdata
        */
       let initialData = !offset && blogs
-
       if (typeof window !== 'undefined' && window.__pagination_init) {
         initialData = null
       }
 
       const { data: paginatedBlog } = withSWR(useGetBlogs({offset, filter}, initialData));
-
+ 
       if (!paginatedBlog) {
         return (
           Array(3)
             .fill(0)
             .map(
               (_, i) =>
-              <Col md={4} key={i}>
-                <CardItemBlank />
-              </Col>
+                filter.view.list
+                  ? <Col md={9} key={i}>
+                      <CardListItemBlank />
+                    </Col>
+                  : <Col md={4} key={`${i}-item`}>
+                      <CardItemBlank />
+                    </Col>
           )
         )
       }
@@ -53,7 +58,7 @@ export const useGetBlogsPages = ({blogs, filter}) => {
               author={blog.author}
               title={blog.title}
               subtitle={blog.subtitle}
-              date={blog.date}
+              date={moment(blog.date).format('LLLL')}
               link={{
                 href: '/blogs/[slug]',
                 as: `/blogs/${blog.slug}`
@@ -84,7 +89,7 @@ export const useGetBlogsPages = ({blogs, filter}) => {
       if (SWR.data && SWR.data.length === 0) {
         return null
       }
-      return (index + 1) * 3;
+      return (index + 1) * 6;
     },
     [ filter ]
   )

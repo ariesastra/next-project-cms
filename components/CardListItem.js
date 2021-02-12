@@ -1,11 +1,11 @@
 //Dependencies
 import Link from 'next/link'
-import {urlFor} from 'lib/api'
+import moment from 'moment'
 
 // Style
 import {Card} from 'react-bootstrap'
 
-const CardListItem = ({title, subtitle, link, author, date, avatar}) => {
+const CardListItem = ({title, subtitle, link, author, date, mode = 'normal'}) => {
   return (
     <>
       {/* CardListItem STARTS */}
@@ -14,19 +14,39 @@ const CardListItem = ({title, subtitle, link, author, date, avatar}) => {
           <Card.Header
             className="d-flex flex-row">
             <img
-              src={urlFor(author?.avatar).height(50).fit('max') || 'https://via.placeholder.com/150'}
+              src={ author?.avatar || 'https://via.placeholder.com/150' }
               className="rounded-circle mr-3"
               height="50px"
               width="50px"
               alt="avatar"/>
-              <div>
-                <Card.Title className="font-weight-bold mb-1">{author.name}</Card.Title>
-                <Card.Text className="card-date">{date}</Card.Text>
-              </div>
+            <div>
+              {
+                mode === 'placeholder'
+                  ? <div>
+                      <Card.Title className="font-weight-bold mb-1">Placeholder Author</Card.Title>
+                      <Card.Text className="card-date">Placeholder Date</Card.Text>
+                    </div>
+                  : 
+                    <div>
+                      <Card.Title className="font-weight-bold mb-1">{author.name}</Card.Title>
+                      <Card.Text className="card-date">{moment(date).format('LLLL')}</Card.Text>
+                    </div>
+
+              }
+            </div>
           </Card.Header>
           <Card.Body>
-            <Card.Title className="card-main-title">{title}</Card.Title>
-            <Card.Text>{subtitle}</Card.Text>
+            {
+              mode === 'placeholder'
+                ? <>
+                    <Card.Title className="font-weight-bold mb-1">Placeholder Title</Card.Title>
+                    <Card.Text className='card-date'>Placeholder Subtitle</Card.Text>
+                  </>
+                : <>
+                    <Card.Title className="card-main-title">{title}</Card.Title>
+                    <Card.Text>{subtitle}</Card.Text>
+                  </>
+            }
           </Card.Body>
         </div>
         {

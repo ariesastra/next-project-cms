@@ -1,10 +1,11 @@
 // Dependencies
 import BreadcrumbData from 'components/Breadcrumb'
+import moment from 'moment'
 
 // Components
 import Layout from 'components/Layout'
 import BlogHeader from 'components/BlogHeader'
-import getAllBlogs, {getBlogBySlug, urlFor} from 'lib/api'
+import {getAllBlogs, getBlogBySlug, urlFor} from 'lib/api'
 import BlockContent from 'components/BlogContent'
 
 // Style
@@ -23,7 +24,7 @@ const BlogDetail = ({blog}) => {
             subtitle={blog.subtitle}
             coverImage={urlFor(blog.coverImage).height(450).fit('max').url()}
             author={blog.author}
-            date={blog.date}
+            date={moment(blog.date).format('LLLL')}
           />
           <hr/>
           {/* Blog Content Here */}
@@ -46,7 +47,7 @@ export async function getStaticProps({params}){
  * listing our data to render in SSR and post it to Props
  * as a HTML data in client.
  */
-
+// TODO introduce fallback
 export async function getStaticPaths(){
   // Get all blog data
   const allBlogs = await getAllBlogs()

@@ -17,23 +17,28 @@ const BlogHeader = ({title, subtitle, author, date, coverImage}) => {
       </p>
       <h1 className="font-weight-bold blog-detail-header-title mb-0">{title}</h1>
       <h2 className="blog-detail-header-subtitle mb-3">{subtitle}</h2>
-        {/* Check if contains cover image */}
-        <img
-          className="img-fluid rounded main-image"
-          src={coverImage} alt={title}/>
-        <span>
-          {date}
-        </span>
-        <style jsx>{`
-          span {
-            margin: 10px 0 0 0;
-            display: flex;
-          }
-          .main-image{
-            display: flex;
-            margin:auto
-          }
-        `}</style>
+      {/* Check if contains cover image */}
+      {
+          coverImage 
+          ? <img
+              className="img-fluid rounded main-image"
+              src={coverImage} alt={title}
+            />
+          : <></>
+      }
+      <span>
+        {date}
+      </span>
+      <style jsx>{`
+        span {
+          margin: 10px 0 0 0;
+          display: flex;
+        }
+        .main-image{
+          display: flex;
+          margin:auto
+        }
+      `}</style>
     </div>
   )
 }
