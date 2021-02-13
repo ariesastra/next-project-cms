@@ -5,6 +5,7 @@ import Router from 'next/router'
 
 // Components
 import Navbars from 'components/Navbar'
+import {useTheme} from 'provider/ThemeProvider'
 
 // Style
 import { Container } from "react-bootstrap"
@@ -18,15 +19,20 @@ Router.onRouteChangeStart = url => {
 Router.onRouteChangeComplete = () => NProgress.done()
 Router.onRouteChangeError = () => NProgress.done()
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
+  const {theme, toggleTheme} = useTheme()
+
   return (
-    <>
+    <div className={theme.type}>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,700;1,900&display=swap" rel="stylesheet" />
       </Head>
       <Container>
-        <Navbars />
+        <Navbars
+          theme={theme}
+          toggleTheme={toggleTheme}
+        />
 
         {/* Body Content */}
         <div className='blog-detail-page'>
@@ -41,7 +47,16 @@ const Layout = ({children}) => {
           </div>
         </footer>
       </Container>
-    </>
+      <style jsx global>
+        {`
+          html, body {
+            background: ${theme.background};
+            color: ${theme.fontColor};
+            transition: color 0.2s ease-out 0s, background 0.2s ease-out 0s;
+          }
+        `}
+      </style>
+    </div>
   )
 }
 

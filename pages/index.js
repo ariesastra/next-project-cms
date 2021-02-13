@@ -7,7 +7,7 @@ import FilteringMenu from 'components/FilteringMenu'
 import {useGetBlogsPages} from 'actions/pagination'
 
 // Libs & Other
-import {getAllBlogs} from 'lib/api'
+import {getPaginatedBlogs} from 'lib/api'
 
 // Style
 import { Row, Button } from 'react-bootstrap';
@@ -89,7 +89,7 @@ This function also provide props to your page
 and it will craete static / html page
 */
 export async function getStaticProps(){
-  const blogs = await getAllBlogs({ offset: 0, date: 'desc' })
+  const blogs = await getPaginatedBlogs({ offset: 0, date: 'desc' })
   return{
     props:{
       blogs

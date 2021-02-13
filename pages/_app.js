@@ -1,9 +1,12 @@
-import {library, config} from '@fortawesome/fontawesome-svg-core'
+import ThemeProvider from 'provider/ThemeProvider';
+import { library, config } from '@fortawesome/fontawesome-svg-core'
 import {
   faBorderAll,
   faList,
   faSortAlphaUp,
-  faSortAlphaDown
+  faSortAlphaDown,
+  faSun,
+  faMoon,
 } from '@fortawesome/free-solid-svg-icons'
 
 config.autoAddCss = false
@@ -11,7 +14,9 @@ library.add(
   faList,
   faBorderAll,
   faSortAlphaUp,
-  faSortAlphaDown
+  faSortAlphaDown,
+  faSun,
+  faMoon
 )
 
 // Styles
@@ -22,7 +27,9 @@ import 'nprogress/nprogress.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return  <ThemeProvider>
+            <Component {...pageProps} />
+          </ThemeProvider>
 }
 
 export default MyApp

@@ -1,17 +1,34 @@
 // Dependencies
 import BreadcrumbData from 'components/Breadcrumb'
 import moment from 'moment'
+import { useRouter } from 'next/router'
+import ErrorPage from 'next/error'
 
 // Components
 import Layout from 'components/Layout'
 import BlogHeader from 'components/BlogHeader'
-import {getAllBlogs, getBlogBySlug, urlFor} from 'lib/api'
+import {getPaginatedBlogs, getBlogBySlug, urlFor} from 'lib/api'
 import BlockContent from 'components/BlogContent'
 
 // Style
 import {Row, Col} from 'react-bootstrap'
 
-const BlogDetail = ({blog}) => {
+const BlogDetail = ({ blog }) => {
+  const router = useRouter()
+  // checking if there are fallback is false, and not have a slug
+  if (!router.isFallback && !blog?.slug) {
+    return <ErrorPage statusCode="404"/>
+  }
+  
+  if (router.isFallback) {
+    // console.log('Loading Fallback Page');
+    return (
+      <Layout className='blog-detail-page'>
+        loading...
+      </Layout>
+    )
+  }
+
   return (
     <Layout className="blog-detail-page">
       {/* Breadcrumb */}
@@ -35,7 +52,9 @@ const BlogDetail = ({blog}) => {
   )
 }
 
-export async function getStaticProps({params}){
+export async function getStaticProps({ params }) {
+  // console.log(params);
+  // console.log('loading detail pages');
   const blog = await getBlogBySlug(params.slug)
   return{
     props: {blog}
@@ -50,11 +69,12 @@ export async function getStaticProps({params}){
 // TODO introduce fallback
 export async function getStaticPaths(){
   // Get all blog data
-  const allBlogs = await getAllBlogs()
-  
+  const allBlogs = await getPaginatedBlogs()
+  const paths = allBlogs?.map(blog => ({ params: { slug: blog.slug } }))
+  // console.log(paths);
   return {
-    paths: allBlogs.map(blog => ({params: {slug: blog.slug}})),//looping all blogs data into array
-    fallback: false //is for error page, and fallback to 404 for example
+    paths,//looping all blogs data into array
+    fallback: true //is for error page, and fallback to 404 for example
   }
 }
 
