@@ -5,6 +5,7 @@ import Layout from 'components/Layout'
 import AuthorIntro from 'components/AuthorIntro'
 import FilteringMenu from 'components/FilteringMenu'
 import {useGetBlogsPages} from 'actions/pagination'
+import PreviewAlert from 'components/PreviewAlert'
 
 // Libs & Other
 import {getPaginatedBlogs} from 'lib/api'
@@ -12,7 +13,7 @@ import {getPaginatedBlogs} from 'lib/api'
 // Style
 import { Row, Button } from 'react-bootstrap';
 
-export default function Home({blogs}){
+export default function Home({blogs, preview}){
   // debugger
   // Viewing Options
   const [filter, setFilter] = useState({
@@ -42,6 +43,9 @@ export default function Home({blogs}){
 
   return (
     <Layout>
+      {/* Preview Alert */}
+      {preview && <PreviewAlert/>}
+      
       {/* Author Intro */}
       <AuthorIntro />
 
@@ -88,11 +92,12 @@ it will be called on Server / SSR.
 This function also provide props to your page
 and it will craete static / html page
 */
-export async function getStaticProps(){
+export async function getStaticProps({preview = false}){
   const blogs = await getPaginatedBlogs({ offset: 0, date: 'desc' })
   return{
     props:{
-      blogs
+      blogs,
+      preview
     }
   }
 }

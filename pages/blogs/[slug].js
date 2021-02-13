@@ -9,11 +9,12 @@ import Layout from 'components/Layout'
 import BlogHeader from 'components/BlogHeader'
 import {getPaginatedBlogs, getBlogBySlug, urlFor} from 'lib/api'
 import BlockContent from 'components/BlogContent'
+import PreviewAlert from 'components/PreviewAlert'
 
 // Style
 import {Row, Col} from 'react-bootstrap'
 
-const BlogDetail = ({ blog }) => {
+const BlogDetail = ({ blog, preview }) => {
   const router = useRouter()
   // checking if there are fallback is false, and not have a slug
   if (!router.isFallback && !blog?.slug) {
@@ -21,7 +22,6 @@ const BlogDetail = ({ blog }) => {
   }
   
   if (router.isFallback) {
-    // console.log('Loading Fallback Page');
     return (
       <Layout className='blog-detail-page'>
         loading...
@@ -35,6 +35,10 @@ const BlogDetail = ({ blog }) => {
       <BreadcrumbData page='Artikel' slug={blog?.slug} />
       <Row>
         <Col md={{ span: 10, offset: 1 }}>
+          {/* Preview Mode */}
+          {
+            preview && <PreviewAlert/>
+          }
           {/* Blog Header */}
           <BlogHeader
             title={blog.title}
@@ -52,12 +56,15 @@ const BlogDetail = ({ blog }) => {
   )
 }
 
-export async function getStaticProps({ params }) {
-  // console.log(params);
-  // console.log('loading detail pages');
-  const blog = await getBlogBySlug(params.slug)
+export async function getStaticProps({ params, preview = false, previewData }) {
+  // console.log(`Preview is ${preview}`);
+  // TODO: pass preview to getBlogBySlug and fetch draft blog
+  const blog = await getBlogBySlug(params.slug, preview)
   return{
-    props: {blog}
+    props: {
+      blog,
+      preview
+    }
   }
 }
 /**
