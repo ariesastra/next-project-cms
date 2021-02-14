@@ -14,7 +14,6 @@ import {getPaginatedBlogs} from 'lib/api'
 import { Row, Button } from 'react-bootstrap';
 
 export default function Home({blogs, preview}){
-  // debugger
   // Viewing Options
   const [filter, setFilter] = useState({
     view: { list: 0 },
