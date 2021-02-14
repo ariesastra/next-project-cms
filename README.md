@@ -36,6 +36,13 @@ To learn more about this project, take a look at the following resources:
 
   You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+## Create you Own ENV
+```javascript
+  SANITY_DATASET_NAME=YOUR_DATASET_NAME //from sanity
+  SANITY_PROJECT_ID=YOUR_PROJECT_ID //from sanity dashboard
+  SANITY_PREVIEW_SECRET=YOUR_PREVIEW_SECRET //unique string
+  SANITY_PREVIEW_TOKEN=YOUR_TOKEN_API //from sanity dashboard
+```
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
