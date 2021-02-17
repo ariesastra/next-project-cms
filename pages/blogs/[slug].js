@@ -45,7 +45,7 @@ const BlogDetail = ({ blog, preview }) => {
             subtitle={blog.subtitle}
             coverImage={urlFor(blog.coverImage).height(450).fit('max').url()}
             author={blog.author}
-            date={moment(blog.date).format('LLLL')}
+            date={moment(blog.date).format('LL')}
           />
           <hr/>
           {/* Blog Content Here */}

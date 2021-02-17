@@ -1,6 +1,5 @@
 // Dependencies
-import { useSWRPages } from 'swr';
-import { useEffect } from 'react'
+import { useSWRPages } from 'swr'
 import moment from 'moment'
 
 // Components
@@ -11,27 +10,53 @@ import CardItemBlank from 'components/CardItemBlank'
 import CardListItemBlank from 'components/CardListItemBlank'
 
 // Style
-import {Col} from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
+
+const BlogList = ({blogs, filter}) => {
+  
+  return blogs
+    .map(blog =>
+    filter.view.list ?
+      <Col key={`${blog.slug}-list`} md="9">
+        <CardListItem
+          author={blog.author}
+          title={blog.title}
+          subtitle={blog.subtitle}
+          date={moment(blog.date).format('LL')}
+          link={{
+            href: '/blogs/[slug]',
+            as: `/blogs/${blog.slug}`
+          }}
+        />
+      </Col>
+      :
+      <Col key={blog.slug} md="4">
+        <CardItem
+          author={blog.author}
+          title={blog.title}
+          subtitle={blog.subtitle}
+          date={moment(blog.date).format('LL')}
+          image={blog.coverImage}
+          link={{
+            href: '/blogs/[slug]',
+            as: `/blogs/${blog.slug}`
+          }}
+        />
+      </Col>
+    )
+}
 
 export const useGetBlogsPages = ({blogs, filter}) => {
-  useEffect(() => {
-    //assign pagination to window 
-    window.__pagination_init = true
-  }, [])
 
   return useSWRPages(
     'index-page',
     ({ offset, withSWR, limit }) => {
-      /**
-       * If there are no offset / offset is null
-       * put blogs to initialdata
-       */
-      let initialData = !offset && blogs
-      if (typeof window !== 'undefined' && window.__pagination_init) {
-        initialData = null
-      }
+      
+      const { data: paginatedBlog, error } = withSWR(useGetBlogs({offset, filter}));
 
-      const { data: paginatedBlog } = withSWR(useGetBlogs({offset, filter}, initialData));
+      if (!offset && !paginatedBlog && !filter) {
+        return <BlogList blogs={blogs} filter={filter} />
+      }
  
       if (!paginatedBlog) {
         return (
@@ -50,36 +75,8 @@ export const useGetBlogsPages = ({blogs, filter}) => {
         )
       }
 
-      return paginatedBlog
-        .map(blog =>
-        filter.view.list ?
-          <Col key={`${blog.slug}-list`} md="9">
-            <CardListItem
-              author={blog.author}
-              title={blog.title}
-              subtitle={blog.subtitle}
-              date={moment(blog.date).format('LLLL')}
-              link={{
-                href: '/blogs/[slug]',
-                as: `/blogs/${blog.slug}`
-              }}
-            />
-          </Col>
-          :
-          <Col key={blog.slug} md="4">
-            <CardItem
-              author={blog.author}
-              title={blog.title}
-              subtitle={blog.subtitle}
-              date={blog.date}
-              image={blog.coverImage}
-              link={{
-                href: '/blogs/[slug]',
-                as: `/blogs/${blog.slug}`
-              }}
-            />
-          </Col>
-        )
+      // Return Blog List
+      return <BlogList blogs={paginatedBlog} filter={filter} />
     },
     // here you will compute offset that will get passed into previous callback function with 'withSWR'
     // SWR: data you will get from 'withSWR' function

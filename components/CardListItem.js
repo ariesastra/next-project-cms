@@ -29,7 +29,7 @@ const CardListItem = ({title, subtitle, link, author, date, mode = 'normal'}) =>
                   : 
                     <div>
                       <Card.Title className="font-weight-bold mb-1">{author.name}</Card.Title>
-                      <Card.Text className="card-date">{moment(date).format('LLLL')}</Card.Text>
+                      <Card.Text className="card-date">{moment(date).format('LL')}</Card.Text>
                     </div>
 
               }

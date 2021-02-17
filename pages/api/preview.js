@@ -8,7 +8,10 @@ export default async function enablePreview(req, res) {
     }    
 
     // Get Blog by slug
-    const blog = await getBlogBySlug(req.query.slug)
+    /**
+     * Preview mode is true, there are true after req.query.slug
+     */
+    const blog = await getBlogBySlug(req.query.slug, true)
 
     if (!blog) {
         return res.status(401).json({message: 'Invalid Slug'})

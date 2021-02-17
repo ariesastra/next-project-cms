@@ -24,10 +24,10 @@ const Layout = ({ children }) => {
 
   return (
     <div className={theme.type}>
-      <Head>
+      {/* <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,700;1,900&display=swap" rel="stylesheet" />
-      </Head>
+      </Head> */}
       <Container>
         <Navbars
           theme={theme}
