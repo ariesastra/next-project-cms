@@ -6,8 +6,8 @@ import moment from 'moment'
 // Style
 import {Card} from 'react-bootstrap'
 
-const CardItem = ({title, subtitle, image, date, author, link, mode = 'normal'}) => {
-
+const CardItem = ({ title, subtitle, image, date, author, link, mode = 'normal' }) => {
+  
   return (
     <>
       <Card className={`fj-card ${mode}`}>
@@ -59,8 +59,17 @@ const CardItem = ({title, subtitle, image, date, author, link, mode = 'normal'})
                     <Card.Text className='card-date'>Placeholder Subtitle</Card.Text>
                   </>
                 : <>
-                    <Card.Title className="card-main-title">{title}</Card.Title>
-                    <Card.Text>{subtitle}</Card.Text>
+                  <Card.Title className="card-main-title">
+                    {
+                      title.length > 40 ?
+                      subtitle.substr(0, 40) + '...' : title
+                    }
+                  </Card.Title>
+                  <Card.Text>
+                    {
+                      subtitle
+                    }
+                  </Card.Text>
                   </>   
             }
           </Card.Body>
