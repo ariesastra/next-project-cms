@@ -43,7 +43,7 @@ export const useGetBlogsPages = ({blogs, filter}) => {
                   ? <Col md={9} key={i}>
                       <CardListItemBlank />
                     </Col>
-                  : <Col md={4} key={`${i}-item`}>
+                  : <Col md={6} lg={4} key={`${i}-item`}>
                       <CardItemBlank />
                     </Col>
           )

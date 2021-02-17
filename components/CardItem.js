@@ -43,10 +43,8 @@ const CardItem = ({ title, subtitle, image, date, author, link, mode = 'normal' 
                       src={
                             urlFor(image)
                             .height(200)
-                            .crop('center')
-                            .fit('clip')
                             .url()
-                          }
+                      }
                       alt="Card image cap"
                     />
             }
