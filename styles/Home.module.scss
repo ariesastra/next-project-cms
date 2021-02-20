@@ -190,11 +190,16 @@
     .tentang{
         min-height: 300px;
         flex-direction: inherit;
+        &Left{
+            height: 250px;
+        }
+        &Right{
+            height: 230px;
+        }
         &Left, &Right{
             position: absolute;
             margin: auto;
             width: 90%;
-            height: 250px;
             top: 0;
             bottom: 0;
         }
@@ -256,6 +261,23 @@
     .btnLPD{
         right: 0;
         left: auto;
+    }
+}
+
+@media screen and (min-width: 1200px){
+    .welcome{
+        &Right{
+            height: 300px;
+        }
+    }
+    .tentang{
+        height: 450px;
+        &Left{
+            height: 350px;
+        }
+        &Right{
+            height: 170px;
+        }
     }
 }
 
