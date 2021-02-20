@@ -19,7 +19,11 @@ const BreadcrumbData = ({ page, slug }) => {
           </Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          {page}
+          <Link href='/artikel'>
+            <a>
+              {page}
+            </a>
+          </Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item active>{slug}</Breadcrumb.Item>
       </Breadcrumb>

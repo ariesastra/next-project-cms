@@ -19,12 +19,23 @@ library.add(
   faMoon
 )
 
+import Router from 'next/router'
+import NProgress from 'nprogress'
+
 // Styles
 import 'styles/index.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'highlight.js/styles/dracula.css'
 import 'nprogress/nprogress.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+
+// NProgress
+Router.onRouteChangeStart = url => {
+  // console.log(url);
+  NProgress.start()
+}
+Router.onRouteChangeComplete = () => NProgress.done()
+Router.onRouteChangeError = () => NProgress.done()
 
 function MyApp({ Component, pageProps }) {
   return  <ThemeProvider>
